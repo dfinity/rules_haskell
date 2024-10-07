@@ -19,6 +19,7 @@ def execute_or_fail_loudly(
         environment = environment,
         quiet = True,
         working_directory = working_directory,
+        timeout = 6000,
     )
     if exec_result.return_code != 0:
         arguments = [_as_string(x) for x in arguments]
