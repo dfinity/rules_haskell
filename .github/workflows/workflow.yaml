@@ -20,13 +20,13 @@ jobs:
     name: Format & Lint
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: tweag/configure-bazel-remote-cache-auth@v0
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+      - uses: tweag/configure-bazel-remote-cache-auth@144b0b915f13a418f5eafe2f68d19564ec136c62 # v0.1.1
         with:
           buildbuddy_api_key: ${{ secrets.BUILDBUDDY_API_KEY }}
           bazelrc_path: .bazelrc.auth
       - uses: ./.github/actions/set_tcp_keepalive_time
-      - uses: extractions/netrc@v2
+      - uses: extractions/netrc@f6f1722d05ce2890aa86fd9654565b1214ac53a4 # v2.0.1
         with:
           machine: api.github.com
           password: ${{ secrets.GITHUB_TOKEN }}
@@ -64,25 +64,25 @@ jobs:
     env:
       NIX_SHELL_ARGS: --arg docTools false --argstr ghcVersion ${{ matrix.ghc }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
       - uses: ./.github/actions/free_disk_space_on_linux
       - name: Mount Bazel cache
-        uses: actions/cache@v4
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
         with:
           path: ~/repo-cache
           key: repo-cache-${{ runner.os }}-nixpkgs-${{ env.cache-version }}
-      - uses: cachix/install-nix-action@v30
+      - uses: cachix/install-nix-action@08dcb3a5e62fa31e2da3d490afc4176ef55ecd72 # v30
         with:
           nix_path: nixpkgs=./nixpkgs/default.nix
           extra_nix_config: |
             trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ=
             extra-substituters = https://cache.iog.io
-      - uses: tweag/configure-bazel-remote-cache-auth@v0
+      - uses: tweag/configure-bazel-remote-cache-auth@144b0b915f13a418f5eafe2f68d19564ec136c62 # v0.1.1
         with:
           buildbuddy_api_key: ${{ secrets.BUILDBUDDY_API_KEY }}
           bazelrc_path: .bazelrc.auth
       - uses: ./.github/actions/set_tcp_keepalive_time
-      - uses: extractions/netrc@v2
+      - uses: extractions/netrc@f6f1722d05ce2890aa86fd9654565b1214ac53a4 # v2.0.1
         with:
           machine: api.github.com
           password: ${{ secrets.GITHUB_TOKEN }}
@@ -101,7 +101,7 @@ jobs:
           cp .bazelrc.local rules_haskell_tests
       - name: Build & test - rules_haskell
         if: matrix.module == 'rules_haskell'
-        uses: tweag/run-nix-shell@v0
+        uses: tweag/run-nix-shell@5d825ec7e0038b6c613f14d523203a2ea49abddb # v0.3.0
         with:
           options: ${{ env.NIX_SHELL_ARGS }}
           run: |
@@ -110,14 +110,14 @@ jobs:
             bazel build //docs:guide_html
       - name: Build & test - rules_haskell_nix
         if: matrix.module == 'rules_haskell_nix'
-        uses: tweag/run-nix-shell@v0
+        uses: tweag/run-nix-shell@5d825ec7e0038b6c613f14d523203a2ea49abddb # v0.3.0
         with:
           options: ${{ env.NIX_SHELL_ARGS }}
           working-directory: rules_haskell_nix
           run: bazel test //...
       - name: Build & test - rules_haskell_tests
         if: matrix.module == 'rules_haskell_tests'
-        uses: tweag/run-nix-shell@v0
+        uses: tweag/run-nix-shell@5d825ec7e0038b6c613f14d523203a2ea49abddb # v0.3.0
         with:
           options: ${{ env.NIX_SHELL_ARGS }}
           working-directory: rules_haskell_tests
@@ -162,22 +162,22 @@ jobs:
       GHC_VERSION: ${{ matrix.ghc }}
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
       - uses: ./.github/actions/free_disk_space_on_linux
       - uses: ./.github/actions/install_apt_pkgs
         with:
           packages: libtinfo5
       - name: Mount Bazel cache
-        uses: actions/cache@v4
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
         with:
           path: ~/repo-cache
           key: repo-cache-${{ runner.os }}-bindist-${{ env.cache-version }}
-      - uses: tweag/configure-bazel-remote-cache-auth@v0
+      - uses: tweag/configure-bazel-remote-cache-auth@144b0b915f13a418f5eafe2f68d19564ec136c62 # v0.1.1
         with:
           buildbuddy_api_key: ${{ secrets.BUILDBUDDY_API_KEY }}
           bazelrc_path: .bazelrc.auth
       - uses: ./.github/actions/set_tcp_keepalive_time
-      - uses: extractions/netrc@v2
+      - uses: extractions/netrc@f6f1722d05ce2890aa86fd9654565b1214ac53a4 # v2.0.1
         with:
           machine: api.github.com
           password: ${{ secrets.GITHUB_TOKEN }}
@@ -247,7 +247,7 @@ jobs:
 
       - name: Upload Logs
         if: ${{ failure() && steps.collect_logs.conclusion == 'success' }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: Logs ${{ matrix.os }} ${{ matrix.module }} ${{ matrix.bzlmod }}
           path: logs
